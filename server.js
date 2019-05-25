@@ -6,22 +6,6 @@ var HOST = '127.0.0.1';
 var PORT = 8877;
 var server = net.createServer();
 
-http.createServer((req,res)=>{
-        //mp.pipe(res);
-        //res.writeHead(200,{
-        //      'Content-Type':'audio/mpeg',
-        //      })
-        res.writeHead(200, {"Content-Type": "text/plain"});
-        res.write("Hello World");
-        res.end();
-}).listen(3000)
-console.log('Server is running at 127.0.0.1:3000')
-
-server.on('listening', function(){
-  console.log('Server is listening on port', PORT);
-  var addr = server.address();
-  console.log('%j', addr);
-});
 
 server.on('connection', function(socket){
   console.log('Server has a new connection');
@@ -38,6 +22,24 @@ server.on('connection', function(socket){
   })
   mp.pipe(file)
 });
+
+http.createServer((req,res)=>{
+        mp.pipe(res)
+        res.writeHead(200,{
+              'Content-Type':'audio/mpeg',
+              })
+        //res.writeHead(200, {"Content-Type": "text/plain"});
+        //res.write("Hello World");
+        //res.end();
+}).listen(3000)
+console.log('Server is running at 127.0.0.1:3000')
+
+server.on('listening', function(){
+  console.log('Server is listening on port', PORT);
+  var addr = server.address();
+  console.log('%j', addr);
+});
+
 
 server.on('close', function(){
   console.log('Server is now closed');
